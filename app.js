@@ -27,8 +27,8 @@ app.get("/", async (req, res) => {
   res.send("Welcome to Mclaren Address Manager");
 });
 
-app.use("/user",authRouter)
 
+app.use("/user", authRouter);
 
 let validateRequest = async (req, res, next) => {
   if (req.headers === undefined) {
@@ -40,6 +40,7 @@ let validateRequest = async (req, res, next) => {
 
     try {
       let data = jwt.verify(token, process.env.secret_token);
+      console.log(data);
       next();
     } catch (err) {
       res.status(403).json({ message: "Invalid token" });
@@ -47,8 +48,7 @@ let validateRequest = async (req, res, next) => {
   }
 };
 
-
-app.use("/address",validateRequest,addressRouter)
+app.use("/address",validateRequest, addressRouter);
 
 const PORT = 3300;
 

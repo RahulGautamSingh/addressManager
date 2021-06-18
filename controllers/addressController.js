@@ -5,39 +5,53 @@ const createNewAddress = async ({
   pincode,
   state,
   country,
-  adressLine1,
+  addressLine1,
   addressLine2,
   label,
 }) => {
   if (
-    !city ||
-    !pincode ||
-    !state ||
-    !country ||
-    !adressLine1 ||
-    !addressLine2 ||
-    !label
+    city==="" ||
+  pincode==="" ||
+    state==="" ||
+    country==="" ||
+    addressLine1==="" ||
+    addressLine2==="" ||
+    label===""
   ) {
     return { status: false, result: "Data incomplete" };
   }
 
   try {
-    const user = new Address({
+    const address = new Address({
       city: city,
       pincode: pincode,
       state: state,
       country: country,
-      adressLine1: addressLine1,
+      addressLine1: addressLine1,
       addressLine2: addressLine2,
       label: label,
     });
+
     let savedAddress = await address.save();
+    console.log(savedAddress)
     return { status: true, result: savedAddress };
   } catch (e) {
     return { status: false, result: e.message };
   }
 };
 
+const deleteAddress = async(addressId)=>{
+let address = await Address.deleteOne({_id:addressId})
+return {status:true,result:address}
+}
+const updateAddress = async(addressId,updateData)=>{
+  let address = await Address.updateOne({_id:addressId},updateData)
+  return {status:true,result:address}
+}
+
+
 module.exports = {
   createNewAddress,
+  deleteAddress,
+  updateAddress
 };
