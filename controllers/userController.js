@@ -83,10 +83,19 @@ const findAddresses = async (email, obj) => {
   return { status: true, result: resArr };
 };
 
+const deleteAddRef = async(id) => {
+  let users = User.find({});
+  users.forEach((elem) => {
+    elem.addresses.pull(id);
+    await elem.save();
+  });
+};
+
 module.exports = {
   createNewUser,
   findUser,
   updateUser,
   seeAllAddresses,
   findAddresses,
+  deleteAddRef,
 };
